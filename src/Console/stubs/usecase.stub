@@ -2,6 +2,8 @@
 
 namespace {{ namespace }};
 
+use {{ namespace }}\Exceptions\{{ class }}Exception;
+
 class {{ class }}
 {
     public function execute()
@@ -9,7 +11,7 @@ class {{ class }}
         try {
 
         } catch (\Throwable $exception) {
-
+            throw new {{ class }}Exception();
         }
     }
 }
