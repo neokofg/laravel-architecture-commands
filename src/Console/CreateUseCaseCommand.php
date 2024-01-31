@@ -3,6 +3,7 @@
 namespace Neoko\LaravelArchitectureCommands\Console;
 
 use Exception;
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,12 +17,9 @@ class CreateUseCaseCommand extends GeneratorCommand
 
     protected $type = 'UseCase';
 
-    protected $stubpath;
-
     protected function getStub()
     {
-        $this->stubpath =  $this->resolveStubPath('/stubs/usecase.stub');
-        return $this->stubpath;
+        return $this->resolveStubPath('/stubs/usecase.stub');
     }
 
     protected function getDefaultNamespace($rootNamespace)
@@ -36,20 +34,45 @@ class CreateUseCaseCommand extends GeneratorCommand
             : __DIR__.$stub;
     }
 
-    protected function getOptions()
+    public function handle()
     {
-        return [
-            ['exception', 'e', InputOption::VALUE_NONE, 'Creates exception for class', '', $this->createException() ],
-        ];
-    }
+        if ($this->isReservedName($this->getNameInput())) {
+            $this->components->error('The name "'.$this->getNameInput().'" is reserved by PHP.');
 
-    protected function createException(): void
-    {
-        $directory = dirname($this->stubpath);
-        $stub = $directory . 'exception.stub';
-        $name = $this->getNameInput() . 'Exception';
-        $path = $this->getPath($name) . '/Exceptions';
+            return false;
+        }
+
+        $name = $this->qualifyClass($this->getNameInput());
+
+        $path = $this->getPath($name);
+
+        if ((! $this->hasOption('force') ||
+                ! $this->option('force')) &&
+            $this->alreadyExists($this->getNameInput())) {
+            $this->components->error($this->type.' already exists.');
+
+            return false;
+        }
+
+        // Next, we will generate the path to the location where this class' file should get
+        // written. Then, we will build the class and make the proper replacements on the
+        // stub files so that it gets the correctly formatted namespace and class name.
         $this->makeDirectory($path);
-        $this->files->put($path, $this->sortImports($this->replaceNamespace($stub, $name)->replaceClass($stub, $name)));
+        $this->makeDirectory($path) . '/Exceptions';
+
+        $stubException = $this->files->get($this->resolveStubPath('/stubs/exception.stub'));
+        $this->files->put($path . '/Exceptions', $this->sortImports(
+            $this->replaceNamespace($stubException, $name . 'Exceptions')
+                ->replaceClass($stubException, $name . 'Exception')
+        ));
+        $this->files->put($path, $this->sortImports($this->buildClass($name)));
+
+        $info = $this->type;
+
+        if (windows_os()) {
+            $path = str_replace('/', '\\', $path);
+        }
+
+        $this->components->info(sprintf('%s [%s] created successfully.', $info, $path));
     }
 }
