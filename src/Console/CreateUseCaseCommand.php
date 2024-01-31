@@ -54,17 +54,15 @@ class CreateUseCaseCommand extends GeneratorCommand
             return false;
         }
 
-        // Next, we will generate the path to the location where this class' file should get
-        // written. Then, we will build the class and make the proper replacements on the
-        // stub files so that it gets the correctly formatted namespace and class name.
         $this->makeDirectory($path);
-        $this->makeDirectory($path) . '/Exceptions';
 
+        $this->makeDirectory(dirname($path)) . '/Exceptions' . $name . 'Exception.php';
         $stubException = $this->files->get($this->resolveStubPath('/stubs/exception.stub'));
         $this->files->put($path . '/Exceptions', $this->sortImports(
             $this->replaceNamespace($stubException, $name . 'Exceptions')
                 ->replaceClass($stubException, $name . 'Exception')
         ));
+
         $this->files->put($path, $this->sortImports($this->buildClass($name)));
 
         $info = $this->type;
