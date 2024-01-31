@@ -16,9 +16,12 @@ class CreateUseCaseCommand extends GeneratorCommand
 
     protected $type = 'UseCase';
 
+    protected $stubpath;
+
     protected function getStub()
     {
-        return $this->resolveStubPath('/stubs/usecase.stub');
+        $this->stubpath =  $this->resolveStubPath('/stubs/usecase.stub');
+        return $this->stubpath;
     }
 
     protected function getDefaultNamespace($rootNamespace)
@@ -42,7 +45,7 @@ class CreateUseCaseCommand extends GeneratorCommand
 
     protected function createException(): void
     {
-        $directory = dirname($this->getStub());
+        $directory = dirname($this->stubpath);
         $stub = $directory . 'exception.stub';
         $name = $this->getNameInput() . 'Exception';
         $path = $this->getPath($name) . '/Exceptions';
