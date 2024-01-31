@@ -1,0 +1,30 @@
+{
+    "name": "neoko/laravel-architecture-commands",
+    "description": "This package adds make commands for clean architecture files",
+    "type": "library",
+    "require": {
+        "php": "^8.2"
+    },
+    "require-dev": {
+        "php": "^8.2"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Neoko\\LaravelArchitectureCommands\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Neoko\\LaravelArchitectureCommands\\LaravelArchitectureCommandsProvider"
+            ]
+        }
+    },
+    "authors": [
+        {
+            "name": "neoko"
+        }
+    ],
+    "minimum-stability": "dev"
+}

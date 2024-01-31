@@ -1,0 +1,15 @@
+<?php
+
+namespace {{ namespace }};
+
+class {{ class }}
+{
+    public function execute()
+    {
+        try {
+
+        } catch (\Throwable $exception) {
+
+        }
+    }
+}
