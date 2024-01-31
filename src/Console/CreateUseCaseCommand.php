@@ -42,7 +42,8 @@ class CreateUseCaseCommand extends GeneratorCommand
 
     protected function createException(): void
     {
-        $stub = $this->resolveStubPath('/stubs/exception.stub');
+        $directory = dirname($this->getStub());
+        $stub = $directory . 'exception.stub';
         $name = $this->getNameInput() . 'Exception';
         $path = $this->getPath($name) . '/Exceptions';
         $this->makeDirectory($path);
