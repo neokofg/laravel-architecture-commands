@@ -45,6 +45,7 @@ class CreateUseCaseCommand extends GeneratorCommand
         $name = $this->qualifyClass($this->getNameInput());
 
         $path = $this->getPath($name);
+        $exceptionPath = dirname($path) . '/Exceptions' . $name . 'Exception.php';
 
         if ((! $this->hasOption('force') ||
                 ! $this->option('force')) &&
@@ -55,10 +56,10 @@ class CreateUseCaseCommand extends GeneratorCommand
         }
 
         $this->makeDirectory($path);
+        $this->makeDirectory($exceptionPath);
 
-        $this->makeDirectory(dirname($path)) . '/Exceptions' . $name . 'Exception.php';
         $stubException = $this->files->get($this->resolveStubPath('/stubs/exception.stub'));
-        $this->files->put($path . '/Exceptions', $this->sortImports(
+        $this->files->put($exceptionPath, $this->sortImports(
             $this->replaceNamespace($stubException, $name . 'Exceptions')
                 ->replaceClass($stubException, $name . 'Exception')
         ));
