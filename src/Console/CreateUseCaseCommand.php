@@ -45,7 +45,7 @@ class CreateUseCaseCommand extends GeneratorCommand
         $name = $this->qualifyClass($this->getNameInput());
 
         $path = $this->getPath($name);
-        $exceptionPath = dirname($path) . '/Exceptions' . $name . 'Exception.php';
+        $exceptionPath = dirname($path) . '/Exceptions/' . $this->getNameInput() . 'Exception.php';
 
         if ((! $this->hasOption('force') ||
                 ! $this->option('force')) &&
