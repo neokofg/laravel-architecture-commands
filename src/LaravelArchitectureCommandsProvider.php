@@ -3,6 +3,7 @@
 namespace Neoko\LaravelArchitectureCommands;
 
 use Illuminate\Support\ServiceProvider;
+use Neoko\LaravelArchitectureCommands\Console\CreateUseCaseCommand;
 
 class LaravelArchitectureCommandsProvider extends ServiceProvider
 {
@@ -10,7 +11,7 @@ class LaravelArchitectureCommandsProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-
+                CreateUseCaseCommand::class
             ]);
         }
     }
