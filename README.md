@@ -1,4 +1,4 @@
-## Laravel Architecture Commands
+## Laravel Architecture Commands (LAC)
 
 ```cmd
 php artisan make:usecase User/CreateUseCase
