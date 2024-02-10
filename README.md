@@ -7,6 +7,7 @@ composer require neoko/laravel-architecture-commands
 
 <hr>
 
+### USAGE
 ```cmd
 php artisan make:usecase User/CreateUseCase
 ```
